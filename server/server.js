@@ -16,18 +16,18 @@ app.use(express.json());
 app.get('/', (req, res) => res.send('LingoCompanion Backend is running ✅'));
 app.get('/api/chat', (req, res) => res.send('POST to this endpoint to chat ✅'));
 
-
-// Initialize OpenAI client
-// Note: We use the OpenAI SDK, but you can point it to OpenRouter, Google Gemini (if compatible), 
-// or OpenAI itself by changing the baseURL and API Key.
+// Initialize OpenAI client pointing to OpenRouter
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'your-api-key-here',
-  baseURL: process.env.BASE_URL || 'https://api.openai.com/v1',
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.BASE_URL || 'https://openrouter.ai/api/v1',
   defaultHeaders: {
-    "HTTP-Referer": "http://localhost:5173", // Optional, for including your app on openrouter.ai rankings.
-    "X-Title": "LingoCompanion", // Optional. Shows in rankings on openrouter.ai.
+    "HTTP-Referer": "https://english-speaking-partner.vercel.app",
+    "X-Title": "LingoCompanion",
   }
 });
+
+console.log('API Key present:', !!process.env.OPENAI_API_KEY);
+console.log('Base URL:', process.env.BASE_URL || 'https://openrouter.ai/api/v1');
 
 app.post('/api/chat', async (req, res) => {
   try {
