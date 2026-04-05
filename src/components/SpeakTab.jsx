@@ -120,6 +120,15 @@ export default function SpeakTab() {
   }, []);
 
   const toggleConversation = () => {
+    // UNLOCK AUDIO ON MOBILE: 
+    // Phones block AI voices if they aren't triggered by a physical tap.
+    // Adding this empty speech right on the button click unlocks it forever.
+    if ('speechSynthesis' in window) {
+      const unlockAudio = new SpeechSynthesisUtterance('');
+      unlockAudio.volume = 0;
+      window.speechSynthesis.speak(unlockAudio);
+    }
+
     if (conversationMode) {
       setConversationMode(false);
       recognitionRef.current?.stop();
