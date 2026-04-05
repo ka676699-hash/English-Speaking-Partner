@@ -6,8 +6,16 @@ import { OpenAI } from 'openai';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ['https://english-speaking-partner.vercel.app', 'http://localhost:5173'],
+  methods: ['GET', 'POST'],
+}));
 app.use(express.json());
+
+// Health check route so Render knows the server is alive
+app.get('/', (req, res) => res.send('LingoCompanion Backend is running ✅'));
+app.get('/api/chat', (req, res) => res.send('POST to this endpoint to chat ✅'));
+
 
 // Initialize OpenAI client
 // Note: We use the OpenAI SDK, but you can point it to OpenRouter, Google Gemini (if compatible), 
